@@ -765,45 +765,49 @@ function createPanelAtPose(viewerTransform) {
 }
 
 function createTexture() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 2048;
-    canvas.height = 1152;  // 16:9 aspect ratio
-    const ctx = canvas.getContext('2d');
+    // Load UI design image
+    const image = new Image();
+    image.onload = () => {
+        // Create canvas to resize/process image
+        const canvas = document.createElement('canvas');
+        canvas.width = 2048;
+        canvas.height = 1152;  // 16:9 aspect ratio
+        const ctx = canvas.getContext('2d');
 
-    // Draw simple UI with bright colors
-    ctx.fillStyle = '#ff0000';  // RED background to test
-    ctx.fillRect(0, 0, 2048, 1152);
+        // Draw loaded image onto canvas
+        ctx.drawImage(image, 0, 0, 2048, 1152);
 
-    ctx.fillStyle = '#00ff00';  // GREEN header
-    ctx.fillRect(0, 0, 2048, 200);
+        // Create WebGL texture
+        panelTexture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, panelTexture);
 
-    ctx.font = 'bold 80px Arial';
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'center';
-    ctx.fillText('VR PANEL TEST', 1024, 576);
+        // Upload texture data
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
 
-    // Create WebGL texture
-    panelTexture = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, panelTexture);
+        // Set texture parameters (WebGL 2 supports mipmaps for non-POT textures!)
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-    // Upload texture data
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+        // Generate mipmaps (works in WebGL 2 for non-POT!)
+        gl.generateMipmap(gl.TEXTURE_2D);
 
-    // Set texture parameters (WebGL 2 supports mipmaps for non-POT textures!)
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        // Enable anisotropic filtering if available
+        const ext = gl.getExtension('EXT_texture_filter_anisotropic');
+        if (ext) {
+            const maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+            gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(16, maxAnisotropy));
+        }
+    };
 
-    // Generate mipmaps (works in WebGL 2 for non-POT!)
-    gl.generateMipmap(gl.TEXTURE_2D);
+    image.onerror = () => {
+        console.error('Failed to load ui-design.png');
+        alert('Failed to load UI design image');
+    };
 
-    // Enable anisotropic filtering if available
-    const ext = gl.getExtension('EXT_texture_filter_anisotropic');
-    if (ext) {
-        const maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-        gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(16, maxAnisotropy));
-    }
+    // Start loading the image
+    image.src = 'ui-design.png';
 }
 
 function onXRFrame(time, frame) {
