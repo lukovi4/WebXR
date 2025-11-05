@@ -1,0 +1,23 @@
+# SSL certificates
+*.pem
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Gradle
+.gradle/
+build/
+local.properties
+
+# Android
+app/build/
+*.apk
+*.ap_
+*.dex
