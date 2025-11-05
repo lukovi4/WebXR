@@ -243,15 +243,15 @@ function createControlPanel(cx, cy, cz, rx, ry, rz, ux, uy, uz, mainPanelWidth, 
 
 function updateControlPanelTexture() {
     const canvas = document.createElement('canvas');
-    canvas.width = 2048;  // Increased from 1366 for better quality
-    canvas.height = 300;  // Increased from 200 for better quality
+    canvas.width = 2048;
+    canvas.height = 300;
     const ctx = canvas.getContext('2d');
 
     // Background
     ctx.fillStyle = 'rgba(0, 0, 0, 0.9)';
     ctx.fillRect(0, 0, 2048, 300);
 
-    // Dividers
+    // Dividers (4 sections of 512px each)
     ctx.strokeStyle = '#444444';
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -765,49 +765,70 @@ function createPanelAtPose(viewerTransform) {
 }
 
 function createTexture() {
-    // Load UI design image
-    const image = new Image();
-    image.onload = () => {
-        // Create canvas to resize/process image
-        const canvas = document.createElement('canvas');
-        canvas.width = 2048;
-        canvas.height = 1152;  // 16:9 aspect ratio
-        const ctx = canvas.getContext('2d');
+    // Load HTML prototype using iframe and html2canvas
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.left = '-9999px';
+    iframe.style.width = '2048px';
+    iframe.style.height = '1152px';
+    iframe.style.border = 'none';
+    iframe.src = 'ui-prototype.html';
 
-        // Draw loaded image onto canvas
-        ctx.drawImage(image, 0, 0, 2048, 1152);
+    document.body.appendChild(iframe);
 
-        // Create WebGL texture
-        panelTexture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, panelTexture);
+    iframe.onload = () => {
+        // Wait for styles and fonts to load
+        setTimeout(() => {
+            try {
+                const iframeWin = iframe.contentWindow;
+                const iframeDoc = iframe.contentDocument || iframeWin.document;
 
-        // Upload texture data
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+                // Use html2canvas to render iframe content at 2x resolution for VR clarity
+                iframeWin.html2canvas(iframeDoc.body, {
+                    width: 2048,
+                    height: 1152,
+                    scale: 2,  // 2x for sharp text in VR (renders at 4096×2304)
+                    backgroundColor: '#1a1a1a',
+                    logging: false,
+                    allowTaint: true,
+                    useCORS: true
+                }).then(canvas => {
+                    // Create WebGL texture from canvas
+                    panelTexture = gl.createTexture();
+                    gl.bindTexture(gl.TEXTURE_2D, panelTexture);
+                    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, canvas);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+                    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                    gl.generateMipmap(gl.TEXTURE_2D);
 
-        // Set texture parameters (WebGL 2 supports mipmaps for non-POT textures!)
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+                    const ext = gl.getExtension('EXT_texture_filter_anisotropic');
+                    if (ext) {
+                        const maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+                        gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(16, maxAnisotropy));
+                    }
 
-        // Generate mipmaps (works in WebGL 2 for non-POT!)
-        gl.generateMipmap(gl.TEXTURE_2D);
+                    // Cleanup
+                    document.body.removeChild(iframe);
+                }).catch(error => {
+                    console.error('html2canvas error:', error);
+                    alert('Failed to render HTML: ' + error.message);
+                    document.body.removeChild(iframe);
+                });
 
-        // Enable anisotropic filtering if available
-        const ext = gl.getExtension('EXT_texture_filter_anisotropic');
-        if (ext) {
-            const maxAnisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-            gl.texParameterf(gl.TEXTURE_2D, ext.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(16, maxAnisotropy));
-        }
+            } catch (error) {
+                console.error('Error rendering HTML:', error);
+                alert('Error: ' + error.message);
+                document.body.removeChild(iframe);
+            }
+        }, 1000);
     };
 
-    image.onerror = () => {
-        console.error('Failed to load ui-design.png');
-        alert('Failed to load UI design image');
+    iframe.onerror = () => {
+        console.error('Failed to load ui-prototype.html');
+        alert('Failed to load HTML prototype');
     };
-
-    // Start loading the image
-    image.src = 'ui-design.png';
 }
 
 function onXRFrame(time, frame) {
