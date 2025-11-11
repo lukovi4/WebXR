@@ -7,8 +7,10 @@ import DebugPanel from './components/DebugPanel';
 import XRModeToggle from './components/XRModeToggle';
 
 // Создаём XR store с поддержкой passthrough
+// Quest native scale factor: 1.4222, но для supersampling используем 2.5
 const xrStore = createXRStore({
   emulate: false,
+  frameBufferScaling: 2.5, // Увеличенный supersampling для лучшего качества клиппинга
 });
 
 // Дефолтные настройки (Variant B)
@@ -18,18 +20,33 @@ const DEFAULT_SETTINGS = {
   verticalPosition: 1.2,
   distance: -1.5,
   rotationX: -0.1, // Угол наклона панели (в радианах)
+
+  // Настройки дизайна карточек
+  cardTitleSize: 40,
+  cardDescriptionSize: 24,
+  cardDurationSize: 24,
+  cardPreviewTitleGap: 8,
+  cardTitleDescriptionGap: 8,
+  cardImageBorderRadius: 8,
+
+  // Настройки отступов грида
+  gridPaddingX: 40,
+  gridCardGap: 32,
+  gridRowGap: 40,
+
+  // Настройки панели
+  panelBorderRadius: 8,
 };
 
 // Ключ для localStorage
 const STORAGE_KEY = 'vr-panel-settings';
 
-// Настройка Inter шрифта
+// Настройка Inter MSDF шрифтов (Medium и Semi-Bold)
 const fontFamilies = {
-  inter: [
-    { path: '/fonts/Inter-Regular.ttf', weight: 400 },
-    { path: '/fonts/Inter-Medium.ttf', weight: 500 },
-    { path: '/fonts/Inter-Bold.ttf', weight: 700 }
-  ]
+  inter: {
+    medium: '/fonts/inter-medium.json',
+    'semi-bold': '/fonts/inter-semi-bold.json'
+  }
 };
 
 function App() {
@@ -107,14 +124,25 @@ function App() {
       {/* 3D Canvas - здесь всё происходит */}
       <Canvas
         style={{ width: '100%', height: '100%' }}
-        dpr={[1, 2]}
+        dpr={window.devicePixelRatio}
+        flat
+        frameloop="always"
         gl={{
           antialias: true,
           alpha: true,  // Включаем прозрачность для passthrough
-          powerPreference: 'high-performance'
+          powerPreference: 'high-performance',
+          precision: 'highp',
+          toneMapping: 0, // THREE.NoToneMapping
+          localClippingEnabled: true, // Для uikit
+          stencil: true, // Улучшает качество клиппинга
+          depth: true // Улучшает depth buffer для клиппинга
+        }}
+        onCreated={({ gl }) => {
+          // Best practice от pmndrs: setPixelRatio для sharp rendering
+          gl.setPixelRatio(window.devicePixelRatio);
         }}
       >
-        <XR store={xrStore}>
+        <XR store={xrStore} foveation={0}>
           {/* XR Mode Toggle Controller */}
           <XRModeToggle
             passthroughMode={passthroughMode}
@@ -135,30 +163,11 @@ function App() {
             <Root
               sizeX={panelSettings.panelWidth}
               sizeY={panelSettings.panelHeight}
-              pixelSize={0.000735}
+              pixelSize={0.00035}
             >
               <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
                 {/* Грид с видео */}
-                <VideoGrid />
-
-                {/* Кнопка Passthrough в левом нижнем углу */}
-                <Container
-                  position="absolute"
-                  bottom={24}
-                  left={24}
-                  width={80}
-                  height={80}
-                  backgroundColor={passthroughMode ? '#4ade80' : '#333333'}
-                  borderRadius={12}
-                  justifyContent="center"
-                  alignItems="center"
-                  cursor="pointer"
-                  onClick={togglePassthrough}
-                >
-                  <Text fontSize={32} color="white" fontWeight={600}>
-                    {passthroughMode ? '🌍' : '🕶️'}
-                  </Text>
-                </Container>
+                <VideoGrid settings={panelSettings} />
 
                 {/* Кнопка Settings в правом нижнем углу */}
                 <Container
@@ -185,12 +194,14 @@ function App() {
           {/* Debug Panel */}
           {showDebug && (
             <group position={[-0.6, 0.5, -1]}>
-              <Root sizeX={0.38} sizeY={0.42} pixelSize={0.001}>
+              <Root sizeX={0.42} sizeY={0.7} pixelSize={0.001}>
                 <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
                   <DebugPanel
                     settings={panelSettings}
                     onUpdate={setPanelSettings}
                     onClose={() => setShowDebug(false)}
+                    passthroughMode={passthroughMode}
+                    togglePassthrough={togglePassthrough}
                   />
                 </DefaultProperties>
               </Root>
