@@ -1,7 +1,12 @@
+import { useCallback, memo } from 'react';
 import { Container } from '@react-three/uikit';
 import VideoCard from './VideoCard';
 
-export default function VideoGrid({ settings }) {
+export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
+  // Callback для получения размеров от первой карточки
+  const handleFirstCardSize = useCallback((width, height) => {
+    onCardSizeMeasured?.(width, height);
+  }, [onCardSizeMeasured]);
 
 
   // Массив видео данных (16 карточек для 4×4 грида)
@@ -139,15 +144,9 @@ export default function VideoGrid({ settings }) {
   return (
     <Container
       width="100%"
-      height="100%"
+      flexShrink={0}
       paddingX={settings.gridPaddingX}
-      paddingTop={40}
-      paddingBottom={80}
       flexDirection="column"
-      backgroundColor="#111111"
-      overflow="scroll"
-      scrollbarWidth={0}
-      borderRadius={settings.panelBorderRadius}
     >
       {/* 4 ряда */}
       {[0, 1, 2, 3].map((rowIndex) => (
@@ -163,6 +162,7 @@ export default function VideoGrid({ settings }) {
           {[0, 1, 2, 3].map((colIndex) => {
             const videoIndex = rowIndex * 4 + colIndex;
             const video = videos[videoIndex];
+            const isFirstCard = rowIndex === 0 && colIndex === 0;
             return (
               <Container
                 key={colIndex}
@@ -170,6 +170,7 @@ export default function VideoGrid({ settings }) {
                 flexBasis={0}
               >
                 <VideoCard
+                  onSizeMeasured={isFirstCard ? handleFirstCardSize : undefined}
                   thumbnailUrl={video.thumbnailUrl}
                   title={video.title}
                   studio={video.studio}
@@ -182,6 +183,10 @@ export default function VideoGrid({ settings }) {
                   cardPreviewTitleGap={settings.cardPreviewTitleGap}
                   cardTitleDescriptionGap={settings.cardTitleDescriptionGap}
                   cardImageBorderRadius={settings.cardImageBorderRadius}
+                  gridPaddingX={settings.gridPaddingX}
+                  gridCardGap={settings.gridCardGap}
+                  panelWidth={settings.panelWidth}
+                  panelHeight={settings.panelHeight}
                 />
               </Container>
             );
@@ -190,4 +195,4 @@ export default function VideoGrid({ settings }) {
       ))}
     </Container>
   );
-}
+});

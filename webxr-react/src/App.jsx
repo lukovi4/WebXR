@@ -1,8 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { XR, createXRStore } from '@react-three/xr';
 import { Root, Container, Text, DefaultProperties } from '@react-three/uikit';
 import VideoGrid from './components/VideoGrid';
+import VideoCarousel from './components/VideoCarousel';
 import DebugPanel from './components/DebugPanel';
 import XRModeToggle from './components/XRModeToggle';
 
@@ -74,6 +75,17 @@ function App() {
 
   // Состояние для passthrough режима
   const [passthroughMode, setPassthroughMode] = useState(false);
+
+  // Состояние для размеров карточки grid (для синхронизации с carousel)
+  const [gridCardWidth, setGridCardWidth] = useState(null);
+  const [gridCardHeight, setGridCardHeight] = useState(null);
+
+  // Callback для получения измеренных размеров карточки из VideoGrid
+  const handleCardSizeMeasured = useCallback((width, height) => {
+    console.log('[App] Card size received:', { width, height });
+    setGridCardWidth(width);
+    setGridCardHeight(height);
+  }, []);
 
   // Сохраняем настройки в localStorage при изменении
   useEffect(() => {
@@ -166,8 +178,27 @@ function App() {
               pixelSize={0.00035}
             >
               <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
-                {/* Грид с видео */}
-                <VideoGrid settings={panelSettings} />
+                {/* Main container with carousel and grid */}
+                <Container
+                  width="100%"
+                  height="100%"
+                  flexDirection="column"
+                  backgroundColor="#111111"
+                  borderRadius={panelSettings.panelBorderRadius}
+                  gap={32}
+                  paddingTop={40}
+                  paddingBottom={80}
+                  overflow="scroll"
+                  scrollbarWidth={0}
+                >
+                  {/* Карусель видео */}
+                  <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                  {/* DEBUG */}
+                  {console.log('[App RENDER] Passing to carousel:', { gridCardWidth, gridCardHeight })}
+
+                  {/* Грид с видео */}
+                  <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
+                </Container>
 
                 {/* Кнопка Settings в правом нижнем углу */}
                 <Container
