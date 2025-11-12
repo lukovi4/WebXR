@@ -77,6 +77,17 @@ function App() {
     }
   };
 
+  // Загружаем позицию хедера из localStorage
+  const loadHeaderPosition = () => {
+    try {
+      const saved = localStorage.getItem('header-position');
+      return saved || 'internal';
+    } catch (error) {
+      console.error('Failed to load header position:', error);
+      return 'internal';
+    }
+  };
+
   // Состояние для настроек панели
   const [panelSettings, setPanelSettings] = useState(loadSettings);
 
@@ -93,6 +104,9 @@ function App() {
   // Состояние для активной страницы
   const [activePage, setActivePage] = useState('free');
 
+  // Состояние для позиции хедера (internal/external)
+  const [headerPosition, setHeaderPosition] = useState(loadHeaderPosition);
+
   // Callback для получения измеренных размеров карточки из VideoGrid
   const handleCardSizeMeasured = useCallback((width, height) => {
     setGridCardWidth(width);
@@ -107,6 +121,15 @@ function App() {
       console.error('Failed to save settings:', error);
     }
   }, [panelSettings]);
+
+  // Сохраняем позицию хедера в localStorage при изменении
+  useEffect(() => {
+    try {
+      localStorage.setItem('header-position', headerPosition);
+    } catch (error) {
+      console.error('Failed to save header position:', error);
+    }
+  }, [headerPosition]);
 
   // Ссылка на функцию переключения (будет установлена из XRModeToggle)
   const toggleHandlerRef = useRef(null);
@@ -221,12 +244,14 @@ function App() {
                   overflow="scroll"
                   scrollbarWidth={0}
                 >
-                  {/* Header */}
-                  <Header
-                    height={250}
-                    paddingX={panelSettings.gridPaddingX}
-                    logoHeight={200}
-                  />
+                  {/* Header - показываем только если headerPosition === 'internal' */}
+                  {headerPosition === 'internal' && (
+                    <Header
+                      height={250}
+                      paddingX={panelSettings.gridPaddingX}
+                      logoHeight={200}
+                    />
+                  )}
 
                   {/* Секция: Featured Videos */}
                   <Container flexDirection="column" width="100%" flexShrink={0}>
@@ -287,6 +312,32 @@ function App() {
             </Root>
           </group>
 
+          {/* External Header над панелью */}
+          {headerPosition === 'external' && (
+            <group
+              position={[
+                0,
+                panelSettings.verticalPosition + (panelSettings.panelHeight / 2) + 0.0875 / 2 + 0.05,
+                panelSettings.distance
+              ]}
+              rotation={[panelSettings.rotationX, 0, 0]}
+            >
+              <Root
+                sizeX={panelSettings.panelWidth}
+                sizeY={0.0875}
+                pixelSize={0.00035}
+              >
+                <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
+                  <Header
+                    height={250}
+                    paddingX={panelSettings.gridPaddingX}
+                    logoHeight={200}
+                  />
+                </DefaultProperties>
+              </Root>
+            </group>
+          )}
+
           {/* Debug Panel */}
           {showDebug && (
             <group position={[-0.6, 0.5, -1]}>
@@ -298,6 +349,8 @@ function App() {
                     onClose={() => setShowDebug(false)}
                     passthroughMode={passthroughMode}
                     togglePassthrough={togglePassthrough}
+                    headerPosition={headerPosition}
+                    onHeaderPositionChange={setHeaderPosition}
                   />
                 </DefaultProperties>
               </Root>

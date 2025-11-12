@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Text } from '@react-three/uikit';
 
-export default function DebugPanel({ settings, onUpdate, onClose, passthroughMode, togglePassthrough }) {
+export default function DebugPanel({ settings, onUpdate, onClose, passthroughMode, togglePassthrough, headerPosition, onHeaderPositionChange }) {
   const [activeTab, setActiveTab] = useState('panel'); // 'panel' or 'card'
 
   // Параметр контрола с кнопками +/-
@@ -359,6 +359,41 @@ export default function DebugPanel({ settings, onUpdate, onClose, passthroughMod
             unit="px"
             decimals={0}
           />
+
+          {/* Header Position Toggle */}
+          <Container flexDirection="row" gap={12} alignItems="center" width="100%" marginBottom={12} marginTop={12}>
+            <Text fontSize={18} color="white" width={140}>
+              Header Pos:
+            </Text>
+            <Container
+              width={120}
+              height={40}
+              backgroundColor={headerPosition === 'internal' ? '#ff6b35' : '#333333'}
+              borderRadius={6}
+              justifyContent="center"
+              alignItems="center"
+              cursor="pointer"
+              onClick={() => onHeaderPositionChange('internal')}
+            >
+              <Text fontSize={18} color="white" fontWeight={600}>
+                Internal
+              </Text>
+            </Container>
+            <Container
+              width={120}
+              height={40}
+              backgroundColor={headerPosition === 'external' ? '#ff6b35' : '#333333'}
+              borderRadius={6}
+              justifyContent="center"
+              alignItems="center"
+              cursor="pointer"
+              onClick={() => onHeaderPositionChange('external')}
+            >
+              <Text fontSize={18} color="white" fontWeight={600}>
+                External
+              </Text>
+            </Container>
+          </Container>
           </Container>
         )}
       </Container>
