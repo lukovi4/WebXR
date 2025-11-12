@@ -6,6 +6,7 @@ import VideoGrid from './components/VideoGrid';
 import VideoCarousel from './components/VideoCarousel';
 import SectionTitle from './components/SectionTitle';
 import Header from './components/Header';
+import NavigationMenu from './components/NavigationMenu';
 import DebugPanel from './components/DebugPanel';
 import XRModeToggle from './components/XRModeToggle';
 
@@ -88,6 +89,9 @@ function App() {
   // Состояние для размеров карточки grid (для синхронизации с carousel)
   const [gridCardWidth, setGridCardWidth] = useState(null);
   const [gridCardHeight, setGridCardHeight] = useState(null);
+
+  // Состояние для активной страницы
+  const [activePage, setActivePage] = useState('free');
 
   // Callback для получения измеренных размеров карточки из VideoGrid
   const handleCardSizeMeasured = useCallback((width, height) => {
@@ -180,6 +184,24 @@ function App() {
             position={[0, panelSettings.verticalPosition, panelSettings.distance]}
             rotation={[panelSettings.rotationX, 0, 0]}
           >
+            {/* Navigation Menu слева */}
+            <group position={[-(panelSettings.panelWidth / 2) - 0.01, 0, 0.05]} rotation={[0, 0.2, 0]} renderOrder={1000}>
+              <Root
+                sizeX={0.1}
+                sizeY={panelSettings.panelHeight}
+                pixelSize={0.00035}
+              >
+                <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
+                  <NavigationMenu
+                    activePage={activePage}
+                    onPageChange={setActivePage}
+                    settings={panelSettings}
+                  />
+                </DefaultProperties>
+              </Root>
+            </group>
+
+            {/* Main Panel */}
             <Root
               sizeX={panelSettings.panelWidth}
               sizeY={panelSettings.panelHeight}
