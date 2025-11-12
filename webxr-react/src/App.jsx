@@ -4,6 +4,8 @@ import { XR, createXRStore } from '@react-three/xr';
 import { Root, Container, Text, DefaultProperties } from '@react-three/uikit';
 import VideoGrid from './components/VideoGrid';
 import VideoCarousel from './components/VideoCarousel';
+import SectionTitle from './components/SectionTitle';
+import Header from './components/Header';
 import DebugPanel from './components/DebugPanel';
 import XRModeToggle from './components/XRModeToggle';
 
@@ -34,6 +36,13 @@ const DEFAULT_SETTINGS = {
   gridPaddingX: 40,
   gridCardGap: 32,
   gridRowGap: 40,
+
+  // Настройки заголовков секций
+  sectionTitleSize: 90,
+  sectionTitleBottomGap: 24,
+
+  // Отступ между секциями
+  sectionGap: 80,
 
   // Настройки панели
   panelBorderRadius: 8,
@@ -82,7 +91,6 @@ function App() {
 
   // Callback для получения измеренных размеров карточки из VideoGrid
   const handleCardSizeMeasured = useCallback((width, height) => {
-    console.log('[App] Card size received:', { width, height });
     setGridCardWidth(width);
     setGridCardHeight(height);
   }, []);
@@ -185,19 +193,54 @@ function App() {
                   flexDirection="column"
                   backgroundColor="#111111"
                   borderRadius={panelSettings.panelBorderRadius}
-                  gap={32}
-                  paddingTop={40}
-                  paddingBottom={80}
+                  gap={panelSettings.sectionGap}
+                  paddingTop={panelSettings.gridPaddingX}
+                  paddingBottom={panelSettings.gridPaddingX}
                   overflow="scroll"
                   scrollbarWidth={0}
                 >
-                  {/* Карусель видео */}
-                  <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
-                  {/* DEBUG */}
-                  {console.log('[App RENDER] Passing to carousel:', { gridCardWidth, gridCardHeight })}
+                  {/* Header */}
+                  <Header
+                    height={250}
+                    paddingX={panelSettings.gridPaddingX}
+                    logoHeight={200}
+                  />
 
-                  {/* Грид с видео */}
-                  <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
+                  {/* Секция: Featured Videos */}
+                  <Container flexDirection="column" width="100%" flexShrink={0}>
+                    <SectionTitle
+                      text="Featured Videos"
+                      fontSize={panelSettings.sectionTitleSize}
+                      bottomGap={panelSettings.sectionTitleBottomGap}
+                      paddingX={panelSettings.gridPaddingX}
+                    />
+                    <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                  </Container>
+
+                  {/* Секция: All Videos */}
+                  <Container flexDirection="column" width="100%" flexShrink={0}>
+                    <SectionTitle
+                      text="All Videos"
+                      fontSize={panelSettings.sectionTitleSize}
+                      bottomGap={panelSettings.sectionTitleBottomGap}
+                      paddingX={panelSettings.gridPaddingX}
+                    />
+                    <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
+                  </Container>
+
+                  {/* Секция: Best of the Month */}
+                  <Container flexDirection="column" width="100%" flexShrink={0}>
+                    <SectionTitle
+                      text="Best of the Month"
+                      fontSize={panelSettings.sectionTitleSize}
+                      bottomGap={panelSettings.sectionTitleBottomGap}
+                      paddingX={panelSettings.gridPaddingX}
+                    />
+                    <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                  </Container>
+
+                  {/* Spacer снизу для отступа при скролле */}
+                  <Container width="100%" height={panelSettings.gridPaddingX} flexShrink={0} />
                 </Container>
 
                 {/* Кнопка Settings в правом нижнем углу */}

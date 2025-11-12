@@ -20,7 +20,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '15:30'
     },
     {
-      thumbnailUrl: '/images/2.webp',
+      thumbnailUrl: '/images/12.webp',
       title: 'Mountain Adventure VR',
       studio: 'Nature VR',
       timeAgo: '5d ago',
@@ -36,7 +36,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '18:20'
     },
     {
-      thumbnailUrl: '/images/4.webp',
+      thumbnailUrl: '/images/14.webp',
       title: 'Desert Sunset Journey',
       studio: 'Wanderlust VR',
       timeAgo: '3d ago',
@@ -52,7 +52,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '25:50'
     },
     {
-      thumbnailUrl: '/images/6.webp',
+      thumbnailUrl: '/images/9.webp',
       title: 'Forest Meditation',
       studio: 'Zen Studios',
       timeAgo: '4d ago',
@@ -68,7 +68,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '20:35'
     },
     {
-      thumbnailUrl: '/images/8.webp',
+      thumbnailUrl: '/images/11.webp',
       title: 'Ancient Ruins Discovery',
       studio: 'History VR',
       timeAgo: '2w ago',
@@ -76,7 +76,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '16:40'
     },
     {
-      thumbnailUrl: '/images/1.webp',
+      thumbnailUrl: '/images/15.webp',
       title: 'Beach Relaxation 360°',
       studio: 'Paradise Studios',
       timeAgo: '1w ago',
@@ -92,7 +92,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '19:10'
     },
     {
-      thumbnailUrl: '/images/3.webp',
+      thumbnailUrl: '/images/13.webp',
       title: 'Underwater Coral Reef',
       studio: 'Deep Blue',
       timeAgo: '5d ago',
@@ -108,7 +108,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '17:45'
     },
     {
-      thumbnailUrl: '/images/5.webp',
+      thumbnailUrl: '/images/10.webp',
       title: 'Tokyo Neon Dreams',
       studio: 'City Vibes',
       timeAgo: '2d ago',
@@ -124,7 +124,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '28:50'
     },
     {
-      thumbnailUrl: '/images/7.webp',
+      thumbnailUrl: '/images/8.webp',
       title: 'Mars Colony Preview',
       studio: 'Cosmic VR',
       timeAgo: '4d ago',
@@ -132,7 +132,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured }) {
       duration: '24:20'
     },
     {
-      thumbnailUrl: '/images/8.webp',
+      thumbnailUrl: '/images/1.webp',
       title: 'Mayan Temple Expedition',
       studio: 'History VR',
       timeAgo: '1w ago',

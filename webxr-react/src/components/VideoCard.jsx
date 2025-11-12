@@ -51,7 +51,6 @@ export default memo(function VideoCard({
           const heightDiff = Math.abs(height - (lastSentHeight.current || 0));
 
           if (widthDiff > 0.5 || heightDiff > 0.5) {
-            console.log('[VideoCard] Size changed:', { width, height, lastWidth: lastSentWidth.current, lastHeight: lastSentHeight.current });
             lastSentWidth.current = width;
             lastSentHeight.current = height;
             onSizeMeasured(width, height);

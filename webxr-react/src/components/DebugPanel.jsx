@@ -141,11 +141,12 @@ export default function DebugPanel({ settings, onUpdate, onClose, passthroughMod
         {/* Табы */}
         <Container
           flexDirection="row"
-          gap={12}
+          gap={8}
           width="100%"
         >
           <Tab id="panel" label="Panel" active={activeTab === 'panel'} />
-          <Tab id="card" label="Card Design" active={activeTab === 'card'} />
+          <Tab id="card" label="Card" active={activeTab === 'card'} />
+          <Tab id="other" label="Other" active={activeTab === 'other'} />
         </Container>
       </Container>
 
@@ -317,6 +318,44 @@ export default function DebugPanel({ settings, onUpdate, onClose, passthroughMod
             min={0}
             max={200}
             step={2}
+            unit="px"
+            decimals={0}
+          />
+          </Container>
+        )}
+
+        {/* Контент вкладки Other */}
+        {activeTab === 'other' && (
+          <Container flexDirection="column">
+          <SettingRow
+            label="Section Title"
+            value={settings.sectionTitleSize}
+            onChange={(val) => onUpdate({ ...settings, sectionTitleSize: val })}
+            min={20}
+            max={200}
+            step={2}
+            unit="px"
+            decimals={0}
+          />
+
+          <SettingRow
+            label="Title Gap"
+            value={settings.sectionTitleBottomGap}
+            onChange={(val) => onUpdate({ ...settings, sectionTitleBottomGap: val })}
+            min={0}
+            max={100}
+            step={2}
+            unit="px"
+            decimals={0}
+          />
+
+          <SettingRow
+            label="Section Gap"
+            value={settings.sectionGap}
+            onChange={(val) => onUpdate({ ...settings, sectionGap: val })}
+            min={0}
+            max={200}
+            step={10}
             unit="px"
             decimals={0}
           />
