@@ -3,16 +3,17 @@ import { useFrame } from '@react-three/fiber';
 import { Container, Text, Svg } from '@react-three/uikit';
 
 const MENU_ITEMS = [
-  { id: 'free', label: 'Free', icon: '/images/icons/free.svg' },
-  { id: 'vr-videos', label: 'VR Videos', icon: '/images/icons/vr-videos.svg' },
-  { id: 'interactive', label: 'Interactive', icon: '/images/icons/interactive.svg' },
-  { id: 'vr-cams', label: 'VR Cams', icon: '/images/icons/vr-cams.svg' },
-  { id: 'liked', label: 'Liked', icon: '/images/icons/liked.svg' },
-  { id: 'following', label: 'Following', icon: '/images/icons/following.svg' },
+  { id: 'for-you', label: 'For you', icon: '/icons/Svg/for_you_icon.svg' },
+  { id: 'all-vr-videos', label: 'All VR videos', icon: '/icons/Svg/vr-videos.svg' },
+  { id: 'passthrough', label: 'Passthrough', icon: '/icons/Svg/passthrough.svg' },
+  { id: 'slr-originals', label: 'SLR Originals', icon: '/icons/Svg/slr-originals.svg' },
+  { id: 'interactive', label: 'Interactive', icon: '/icons/Svg/interactive.svg' },
+  { id: 'vr-cams', label: 'VR Cams', icon: '/icons/Svg/vr-cams.svg' },
+  { id: 'free', label: 'Free', icon: '/icons/Svg/free.svg' },
 ];
 
 export default memo(function NavigationMenu({
-  activePage = 'free',
+  activePage = 'for-you',
   onPageChange,
   settings,
 }) {
@@ -55,9 +56,9 @@ export default memo(function NavigationMenu({
   // Максимальная ширина для подписи
   const labelMaxWidth = expandedWidth - collapsedWidth - gap;
 
-  // Динамический border radius: 140 (круглый) когда закрыто, settings.panelBorderRadius когда открыто
-  const buttonBorderRadius = 130 - (130 - settings.panelBorderRadius) * openFrac;
-  const containerBorderRadius = 130 - (130 - settings.panelBorderRadius) * openFrac;
+  // Динамический border radius: 100 (идеальный круг) когда закрыто, settings.panelBorderRadius когда открыто
+  const buttonBorderRadius = 100 - (100 - settings.panelBorderRadius) * openFrac;
+  const containerBorderRadius = 100 - (100 - settings.panelBorderRadius) * openFrac;
 
   console.log('Menu render:', { open, currentWidth, openFrac });
 
@@ -70,14 +71,14 @@ export default memo(function NavigationMenu({
       justifyContent="center"
       alignItems="flex-start"
     >
-      {/* Белый контейнер с анимированной шириной */}
+      {/* Контейнер с анимированной шириной */}
       <Container
         width={currentWidth + padding * 2}
         flexDirection="column"
         alignItems="flex-start"
         gap={gap}
         padding={padding}
-        backgroundColor="white"
+        backgroundColor="#222222"
         borderRadius={containerBorderRadius}
         onPointerEnter={handlePointerEnter}
         onPointerLeave={handlePointerLeave}
@@ -95,7 +96,7 @@ export default memo(function NavigationMenu({
               alignItems="center"
               justifyContent="flex-start"
               gap={gap}
-              backgroundColor={isActive ? '#ff6b35' : (isHovered ? '#333333' : '#111111')}
+              backgroundColor={isActive ? '#ff6b35' : (isHovered ? '#333333' : '#222222')}
               borderRadius={buttonBorderRadius}
               cursor="pointer"
               onClick={() => onPageChange?.(item.id)}

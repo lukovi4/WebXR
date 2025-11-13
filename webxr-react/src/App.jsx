@@ -7,6 +7,7 @@ import VideoCarousel from './components/VideoCarousel';
 import SectionTitle from './components/SectionTitle';
 import Header from './components/Header';
 import NavigationMenu from './components/NavigationMenu';
+import FooterMenu from './components/FooterMenu';
 import DebugPanel from './components/DebugPanel';
 import XRModeToggle from './components/XRModeToggle';
 import HeroBannerSlider from './components/HeroBannerSlider';
@@ -121,8 +122,11 @@ function App() {
   const [gridCardWidth, setGridCardWidth] = useState(null);
   const [gridCardHeight, setGridCardHeight] = useState(null);
 
-  // Состояние для активной страницы
-  const [activePage, setActivePage] = useState('free');
+  // Состояние для активной страницы (левое меню)
+  const [activePage, setActivePage] = useState('for-you');
+
+  // Состояние для активного элемента футер меню
+  const [activeFooterItem, setActiveFooterItem] = useState('home');
 
   // Состояние для позиции хедера (internal/external)
   const [headerPosition, setHeaderPosition] = useState(loadHeaderPosition);
@@ -311,8 +315,8 @@ function App() {
                       return undefined;
                     }}
                   >
-                    {/* Hero Banner - показываем если enabled */}
-                    {showHeroBanner && (
+                    {/* Hero Banner - показываем только на странице 'for-you' если enabled */}
+                    {showHeroBanner && activePage === 'for-you' && (
                       <HeroBannerSlider
                         panelHeight={panelSettings.panelHeight}
                         heightPercent={panelSettings.bannerHeightPercent}
@@ -328,77 +332,116 @@ function App() {
                         height={250}
                         paddingX={panelSettings.gridPaddingX}
                         logoHeight={200}
-                        marginTop={showHeroBanner ? 0 : panelSettings.gridPaddingX}
-                        marginBottom={showHeroBanner ? 0 : panelSettings.gridPaddingX}
-                        isAbsolute={showHeroBanner}
+                        marginTop={showHeroBanner && activePage === 'for-you' ? 0 : panelSettings.gridPaddingX}
+                        marginBottom={showHeroBanner && activePage === 'for-you' ? 0 : panelSettings.gridPaddingX}
+                        isAbsolute={showHeroBanner && activePage === 'for-you'}
                       />
                     )}
 
-                    {/* Обёртка для секций с отступами и gap */}
-                    <Container
-                      flexDirection="column"
-                      width="100%"
-                      gap={panelSettings.sectionGap}
-                      paddingTop={
-                        showHeroBanner
-                          ? panelSettings.gridPaddingX
-                          : (headerPosition === 'internal' ? 0 : panelSettings.gridPaddingX)
-                      }
-                      paddingBottom={panelSettings.gridPaddingX}
-                      flexShrink={0}
-                    >
-                      {/* Секция: Featured Videos */}
-                      <Container flexDirection="column" width="100%" flexShrink={0}>
-                        <SectionTitle
-                          text="Featured Videos"
-                          fontSize={panelSettings.sectionTitleSize}
-                          bottomGap={panelSettings.sectionTitleBottomGap}
-                          paddingX={panelSettings.gridPaddingX}
-                        />
-                        <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
-                      </Container>
+                    {/* Страница: For You */}
+                    {activePage === 'for-you' && (
+                      <Container
+                        flexDirection="column"
+                        width="100%"
+                        gap={panelSettings.sectionGap}
+                        paddingTop={
+                          showHeroBanner
+                            ? panelSettings.gridPaddingX
+                            : (headerPosition === 'internal' ? 0 : panelSettings.gridPaddingX)
+                        }
+                        paddingBottom={panelSettings.gridPaddingX}
+                        flexShrink={0}
+                      >
+                        {/* 2. Grid: For you - 12 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="For you"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} maxVideos={12} />
+                        </Container>
 
-                      {/* Секция: All Videos */}
-                      <Container flexDirection="column" width="100%" flexShrink={0}>
-                        <SectionTitle
-                          text="All Videos"
-                          fontSize={panelSettings.sectionTitleSize}
-                          bottomGap={panelSettings.sectionTitleBottomGap}
-                          paddingX={panelSettings.gridPaddingX}
-                        />
-                        <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
-                      </Container>
+                        {/* 3. Слайдер: SLR Originals - 12 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="SLR Originals"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                        </Container>
 
-                      {/* Секция: Best of the Month */}
-                      <Container flexDirection="column" width="100%" flexShrink={0}>
-                        <SectionTitle
-                          text="Best of the Month"
-                          fontSize={panelSettings.sectionTitleSize}
-                          bottomGap={panelSettings.sectionTitleBottomGap}
-                          paddingX={panelSettings.gridPaddingX}
-                        />
-                        <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
-                      </Container>
-                    </Container>
-                  </Container>
+                        {/* 4. Слайдер: Passthrough - 12 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="Passthrough"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                        </Container>
 
-                  {/* Кнопка Settings в правом нижнем углу */}
-                  <Container
-                    positionType="absolute"
-                    positionBottom={24}
-                    positionRight={24}
-                    width={80}
-                    height={80}
-                    backgroundColor={showDebug ? '#4a9eff' : '#333333'}
-                    borderRadius={12}
-                    justifyContent="center"
-                    alignItems="center"
-                    cursor="pointer"
-                    onClick={() => setShowDebug(!showDebug)}
-                  >
-                    <Text fontSize={32} color="white" fontWeight={600}>
-                      ⚙️
-                    </Text>
+                        {/* 5. Grid: Free VR porn - 3 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="Free VR porn"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoGrid settings={panelSettings} maxVideos={3} columns={3} />
+                        </Container>
+
+                        {/* 6. Слайдер: Interactive Videos - 12 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="Interactive Videos"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                        </Container>
+
+                        {/* 7. Grid: You May Also Like - 12 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="You May Also Like"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoGrid settings={panelSettings} maxVideos={12} />
+                        </Container>
+                      </Container>
+                    )}
+
+                    {/* Страница: All VR videos */}
+                    {activePage === 'all-vr-videos' && (
+                      <Container
+                        flexDirection="column"
+                        width="100%"
+                        gap={panelSettings.sectionGap}
+                        paddingTop={headerPosition === 'internal' ? 0 : panelSettings.gridPaddingX}
+                        paddingBottom={panelSettings.gridPaddingX}
+                        flexShrink={0}
+                      >
+                        {/* Grid: All VR videos - все 46 видео */}
+                        <Container flexDirection="column" width="100%" flexShrink={0}>
+                          <SectionTitle
+                            text="All VR videos"
+                            fontSize={panelSettings.sectionTitleSize}
+                            bottomGap={panelSettings.sectionTitleBottomGap}
+                            paddingX={panelSettings.gridPaddingX}
+                          />
+                          <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
+                        </Container>
+                      </Container>
+                    )}
                   </Container>
                 </Container>
               </DefaultProperties>
@@ -430,6 +473,36 @@ function App() {
               </Root>
             </group>
           )}
+
+          {/* Footer Menu под панелью */}
+          <group
+            position={[
+              0,
+              panelSettings.verticalPosition - (panelSettings.panelHeight / 2) - 0.0875 / 2 - 0.05,
+              panelSettings.distance
+            ]}
+            rotation={[panelSettings.rotationX, 0, 0]}
+          >
+            <Root
+              sizeX={panelSettings.panelWidth}
+              sizeY={0.0875}
+              pixelSize={0.00035}
+            >
+              <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
+                <FooterMenu
+                  activeItem={activeFooterItem}
+                  onItemChange={(item) => {
+                    if (item === 'profile') {
+                      setShowDebug(!showDebug);
+                    } else {
+                      setActiveFooterItem(item);
+                    }
+                  }}
+                  debugPanelOpen={showDebug}
+                />
+              </DefaultProperties>
+            </Root>
+          </group>
 
           {/* Debug Panel */}
           {showDebug && (

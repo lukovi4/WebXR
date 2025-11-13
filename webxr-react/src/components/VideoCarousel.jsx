@@ -105,15 +105,14 @@ const CAROUSEL_VIDEOS = [
 export default memo(function VideoCarousel({ settings, cardWidth, cardHeight }) {
   const scrollRef = useRef();
 
-  // Блокируем вертикальный скролл через onScroll handler
-  // useCallback чтобы не пересоздавать функцию на каждый рендер
-  const handleScroll = useCallback((x, y) => {
-    // Разрешаем только изменение X (горизонтальный скролл)
-    // Блокируем Y (вертикальный скролл) возвращая false
-    if (y !== 0) {
-      return false; // Предотвращаем вертикальный скролл
-    }
-    // Разрешаем горизонтальный скролл
+  // Карусель скроллится ТОЛЬКО горизонтально, Y всегда = 0
+  const handleScroll = useCallback((newX, newY, scrollPosition, event) => {
+    // ВСЕГДА принудительно устанавливаем Y=0 (карусель не скроллится вертикально)
+    scrollPosition.value = [newX, 0];
+
+    // Блокируем дефолтное обновление (используем наше значение)
+    // При этом вертикальные события пропагируются к родителю для скролла всего контента
+    return false;
   }, []);
 
   // Скролл влево

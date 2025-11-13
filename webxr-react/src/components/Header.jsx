@@ -1,20 +1,29 @@
 import { memo } from 'react';
-import { Container, Image, Text } from '@react-three/uikit';
+import { Container, Image, Text, Svg } from '@react-three/uikit';
 
 export default memo(function Header({
   height = 250,
   paddingX = 40,
   logoHeight = 200,
+  marginTop = 0,
+  marginBottom = 0,
+  isAbsolute = false,
 }) {
   return (
     <Container
-      width="100%"
+      width={isAbsolute ? undefined : "100%"}
       height={height}
       flexShrink={0}
       flexDirection="row"
       alignItems="center"
-      paddingX={paddingX}
-      gap={100}
+      paddingX={isAbsolute ? 0 : paddingX}
+      marginTop={isAbsolute ? 0 : marginTop}
+      marginBottom={isAbsolute ? 0 : marginBottom}
+      positionType={isAbsolute ? 'absolute' : undefined}
+      positionTop={isAbsolute ? paddingX : undefined}
+      positionLeft={isAbsolute ? paddingX : undefined}
+      positionRight={isAbsolute ? paddingX : undefined}
+      zIndex={isAbsolute ? 100 : undefined}
     >
       {/* Логотип слева */}
       <Container
@@ -29,31 +38,28 @@ export default memo(function Header({
         />
       </Container>
 
-      {/* Spacer для выравнивания */}
-      <Container flexGrow={1} />
-
-      {/* Поиск по центру */}
+      {/* Поиск - абсолютно центрированный по всей ширине */}
       <Container
+        positionType="absolute"
+        positionLeft="50%"
+        positionTop="50%"
         height={200}
         width={2000}
-        flexShrink={0}
-        backgroundColor="#222222"
+        transformTranslateX={-1000}
+        transformTranslateY={-100}
+        backgroundColor="#3A3A3A"
         borderRadius={100}
         flexDirection="row"
         alignItems="center"
         paddingX={80}
         gap={50}
+        zIndex={1}
       >
-        <Text fontSize={80} color="#999999">
-          🔍
-        </Text>
+        <Svg src="/icons/Svg/search_icon.svg" width={80} height={80} color="#999999" />
         <Text fontSize={70} color="#999999" fontWeight={500}>
           Search videos...
         </Text>
       </Container>
-
-      {/* Spacer для выравнивания */}
-      <Container flexGrow={1} />
 
       {/* Кнопка Sign In справа */}
       <Container
@@ -65,6 +71,7 @@ export default memo(function Header({
         justifyContent="center"
         alignItems="center"
         cursor="pointer"
+        marginLeft="auto"
       >
         <Text fontSize={70} color="white" fontWeight={700}>
           Sign In
