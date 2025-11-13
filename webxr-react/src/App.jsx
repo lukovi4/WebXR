@@ -19,44 +19,53 @@ const xrStore = createXRStore({
   frameBufferScaling: 2.5, // Увеличенный supersampling для лучшего качества клиппинга
 });
 
-// Дефолтные настройки (Variant B)
+// Дефолтные настройки (настроенные пользователем)
 const DEFAULT_SETTINGS = {
-  panelWidth: 1.41,
-  panelHeight: 0.79,
-  verticalPosition: 1.2,
-  distance: -1.5,
-  rotationX: -0.1, // Угол наклона панели (в радианах)
+  panelWidth: 2.2100000000000004,
+  panelHeight: 1.3900000000000003,
+  verticalPosition: 1.4000000000000001,
+  distance: -2.1,
+  rotationX: 0.07453292519943294, // Угол наклона панели (в радианах)
 
   // Настройки дизайна карточек
-  cardTitleSize: 40,
-  cardDescriptionSize: 24,
-  cardDurationSize: 24,
-  cardPreviewTitleGap: 8,
-  cardTitleDescriptionGap: 8,
-  cardImageBorderRadius: 8,
+  cardTitleSize: 68,
+  cardDescriptionSize: 58,
+  cardDurationSize: 54,
+  cardPreviewTitleGap: 30,
+  cardTitleDescriptionGap: 12,
+  cardImageBorderRadius: 32,
 
   // Настройки отступов грида
-  gridPaddingX: 40,
-  gridCardGap: 32,
-  gridRowGap: 40,
+  gridPaddingX: 160,
+  gridCardGap: 60,
+  gridRowGap: 100,
 
   // Настройки заголовков секций
-  sectionTitleSize: 90,
-  sectionTitleBottomGap: 24,
+  sectionTitleSize: 100,
+  sectionTitleBottomGap: 90,
 
   // Отступ между секциями
-  sectionGap: 80,
+  sectionGap: 200,
 
   // Настройки панели
-  panelBorderRadius: 8,
+  panelBorderRadius: 70,
 
   // Настройки баннера
-  bannerHeightPercent: 50, // Высота баннера в процентах от высоты панели
-  bannerTitleSize: 120, // Размер заголовка баннера
-  bannerDescriptionSize: 60, // Размер описания баннера
+  bannerHeightPercent: 60, // Высота баннера в процентах от высоты панели
+  bannerTitleSize: 150, // Размер заголовка баннера
+  bannerDescriptionSize: 85, // Размер описания баннера
 
   // Настройки скролла
   scrollMultiplier: 0.5, // Множитель чувствительности скролла (0.5 = 50% sensitivity)
+
+  // Настройки Hero баннера
+  heroBannerHeight: 600,
+  heroBannerAutoPlayInterval: 5000,
+  heroBannerTitleSize: 120,
+  heroBannerSubtitleSize: 48,
+
+  // Кривизна панели
+  curvature: "flat",
 };
 
 // Ключ для localStorage
@@ -519,6 +528,32 @@ function App() {
                     onHeaderPositionChange={setHeaderPosition}
                     showHeroBanner={showHeroBanner}
                     onShowHeroBannerChange={setShowHeroBanner}
+                    onSaveAsDefault={() => {
+                      // Сохраняем текущие настройки как дефолтные
+                      try {
+                        localStorage.setItem('vr-default-settings', JSON.stringify(panelSettings));
+                        console.log('✅ Settings saved as default');
+                      } catch (error) {
+                        console.error('Failed to save default settings:', error);
+                      }
+                    }}
+                    onResetToDefault={() => {
+                      // Загружаем сохраненные дефолтные настройки
+                      try {
+                        const saved = localStorage.getItem('vr-default-settings');
+                        if (saved) {
+                          const parsed = JSON.parse(saved);
+                          setPanelSettings(parsed);
+                          console.log('✅ Settings restored from saved default');
+                        } else {
+                          // Если нет сохраненных - используем DEFAULT_SETTINGS из кода
+                          setPanelSettings(DEFAULT_SETTINGS);
+                          console.log('✅ Settings restored to code default');
+                        }
+                      } catch (error) {
+                        console.error('Failed to load default settings:', error);
+                      }
+                    }}
                   />
                 </DefaultProperties>
               </Root>

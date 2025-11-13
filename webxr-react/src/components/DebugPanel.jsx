@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Text } from '@react-three/uikit';
 
-export default function DebugPanel({ settings, onUpdate, onClose, passthroughMode, togglePassthrough, headerPosition, onHeaderPositionChange, showHeroBanner, onShowHeroBannerChange }) {
+export default function DebugPanel({ settings, onUpdate, onClose, passthroughMode, togglePassthrough, headerPosition, onHeaderPositionChange, showHeroBanner, onShowHeroBannerChange, onSaveAsDefault, onResetToDefault }) {
   const [activeTab, setActiveTab] = useState('panel'); // 'panel' or 'card'
 
   // Параметр контрола с кнопками +/-
@@ -117,6 +117,38 @@ export default function DebugPanel({ settings, onUpdate, onClose, passthroughMod
             >
               <Text fontSize={24} color="white" fontWeight={600}>
                 {passthroughMode ? '🌍' : '🕶️'}
+              </Text>
+            </Container>
+
+            {/* Кнопка Save as Default */}
+            <Container
+              width={44}
+              height={44}
+              backgroundColor="#4ade80"
+              borderRadius={8}
+              justifyContent="center"
+              alignItems="center"
+              cursor="pointer"
+              onClick={onSaveAsDefault}
+            >
+              <Text fontSize={20} color="white" fontWeight={600}>
+                💾
+              </Text>
+            </Container>
+
+            {/* Кнопка Reset to Saved */}
+            <Container
+              width={44}
+              height={44}
+              backgroundColor="#ff6b35"
+              borderRadius={8}
+              justifyContent="center"
+              alignItems="center"
+              cursor="pointer"
+              onClick={onResetToDefault}
+            >
+              <Text fontSize={20} color="white" fontWeight={600}>
+                ↺
               </Text>
             </Container>
 
