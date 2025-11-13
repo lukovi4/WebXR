@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Container, Text } from '@react-three/uikit';
 
-export default function DebugPanel({ settings, onUpdate, onClose, passthroughMode, togglePassthrough, headerPosition, onHeaderPositionChange }) {
+export default function DebugPanel({ settings, onUpdate, onClose, passthroughMode, togglePassthrough, headerPosition, onHeaderPositionChange, showHeroBanner, onShowHeroBannerChange }) {
   const [activeTab, setActiveTab] = useState('panel'); // 'panel' or 'card'
 
   // Параметр контрола с кнопками +/-
@@ -394,6 +394,75 @@ export default function DebugPanel({ settings, onUpdate, onClose, passthroughMod
               </Text>
             </Container>
           </Container>
+
+          {/* Show Hero Banner Toggle */}
+          <Container flexDirection="row" gap={12} alignItems="center" width="100%" marginBottom={12}>
+            <Text fontSize={18} color="white" width={140}>
+              Show Banner:
+            </Text>
+            <Container
+              width={120}
+              height={40}
+              backgroundColor={showHeroBanner ? '#4ade80' : '#dc2626'}
+              borderRadius={6}
+              justifyContent="center"
+              alignItems="center"
+              cursor="pointer"
+              onClick={() => onShowHeroBannerChange(!showHeroBanner)}
+            >
+              <Text fontSize={18} color="white" fontWeight={600}>
+                {showHeroBanner ? 'ON' : 'OFF'}
+              </Text>
+            </Container>
+          </Container>
+
+          {/* Banner Height */}
+          <SettingRow
+            label="Banner Height"
+            value={settings.bannerHeightPercent}
+            onChange={(val) => onUpdate({ ...settings, bannerHeightPercent: val })}
+            min={20}
+            max={100}
+            step={5}
+            unit="%"
+            decimals={0}
+          />
+
+          {/* Banner Title Size */}
+          <SettingRow
+            label="Banner Title"
+            value={settings.bannerTitleSize}
+            onChange={(val) => onUpdate({ ...settings, bannerTitleSize: val })}
+            min={40}
+            max={200}
+            step={5}
+            unit="px"
+            decimals={0}
+          />
+
+          {/* Banner Description Size */}
+          <SettingRow
+            label="Banner Desc"
+            value={settings.bannerDescriptionSize}
+            onChange={(val) => onUpdate({ ...settings, bannerDescriptionSize: val })}
+            min={20}
+            max={150}
+            step={5}
+            unit="px"
+            decimals={0}
+          />
+
+          {/* Scroll Multiplier */}
+          <SettingRow
+            label="Scroll Speed"
+            value={settings.scrollMultiplier}
+            onChange={(val) => onUpdate({ ...settings, scrollMultiplier: val })}
+            min={0.1}
+            max={2.0}
+            step={0.1}
+            unit="x"
+            decimals={1}
+          />
           </Container>
         )}
       </Container>

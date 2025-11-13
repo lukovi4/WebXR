@@ -9,6 +9,7 @@ import Header from './components/Header';
 import NavigationMenu from './components/NavigationMenu';
 import DebugPanel from './components/DebugPanel';
 import XRModeToggle from './components/XRModeToggle';
+import HeroBannerSlider from './components/HeroBannerSlider';
 
 // Создаём XR store с поддержкой passthrough
 // Quest native scale factor: 1.4222, но для supersampling используем 2.5
@@ -47,6 +48,14 @@ const DEFAULT_SETTINGS = {
 
   // Настройки панели
   panelBorderRadius: 8,
+
+  // Настройки баннера
+  bannerHeightPercent: 50, // Высота баннера в процентах от высоты панели
+  bannerTitleSize: 120, // Размер заголовка баннера
+  bannerDescriptionSize: 60, // Размер описания баннера
+
+  // Настройки скролла
+  scrollMultiplier: 0.5, // Множитель чувствительности скролла (0.5 = 50% sensitivity)
 };
 
 // Ключ для localStorage
@@ -88,6 +97,17 @@ function App() {
     }
   };
 
+  // Загружаем состояние отображения баннера из localStorage
+  const loadShowBanner = () => {
+    try {
+      const saved = localStorage.getItem('show-hero-banner');
+      return saved === 'true'; // По умолчанию false
+    } catch (error) {
+      console.error('Failed to load show banner state:', error);
+      return false;
+    }
+  };
+
   // Состояние для настроек панели
   const [panelSettings, setPanelSettings] = useState(loadSettings);
 
@@ -106,6 +126,9 @@ function App() {
 
   // Состояние для позиции хедера (internal/external)
   const [headerPosition, setHeaderPosition] = useState(loadHeaderPosition);
+
+  // Состояние для показа/скрытия hero banner
+  const [showHeroBanner, setShowHeroBanner] = useState(loadShowBanner);
 
   // Callback для получения измеренных размеров карточки из VideoGrid
   const handleCardSizeMeasured = useCallback((width, height) => {
@@ -130,6 +153,15 @@ function App() {
       console.error('Failed to save header position:', error);
     }
   }, [headerPosition]);
+
+  // Сохраняем состояние показа баннера в localStorage при изменении
+  useEffect(() => {
+    try {
+      localStorage.setItem('show-hero-banner', showHeroBanner.toString());
+    } catch (error) {
+      console.error('Failed to save show banner state:', error);
+    }
+  }, [showHeroBanner]);
 
   // Ссылка на функцию переключения (будет установлена из XRModeToggle)
   const toggleHandlerRef = useRef(null);
@@ -208,7 +240,7 @@ function App() {
             rotation={[panelSettings.rotationX, 0, 0]}
           >
             {/* Navigation Menu слева */}
-            <group position={[-(panelSettings.panelWidth / 2) - 0.01, 0, 0.05]} rotation={[0, 0.2, 0]} renderOrder={1000}>
+            <group position={[-(panelSettings.panelWidth / 2) - 0.10, 0, 0.03]} rotation={[0, 0.1047, 0]} renderOrder={1000}>
               <Root
                 sizeX={0.1}
                 sizeY={panelSettings.panelHeight}
@@ -231,82 +263,143 @@ function App() {
               pixelSize={0.00035}
             >
               <DefaultProperties fontFamily="inter" fontFamilies={fontFamilies}>
-                {/* Main container with carousel and grid */}
+                {/* Main wrapper with borderRadius and background */}
                 <Container
                   width="100%"
                   height="100%"
-                  flexDirection="column"
-                  backgroundColor="#111111"
                   borderRadius={panelSettings.panelBorderRadius}
-                  gap={panelSettings.sectionGap}
-                  paddingTop={panelSettings.gridPaddingX}
-                  paddingBottom={panelSettings.gridPaddingX}
-                  overflow="scroll"
-                  scrollbarWidth={0}
+                  backgroundColor="#222222"
+                  overflow="hidden"
                 >
-                  {/* Header - показываем только если headerPosition === 'internal' */}
-                  {headerPosition === 'internal' && (
-                    <Header
-                      height={250}
-                      paddingX={panelSettings.gridPaddingX}
-                      logoHeight={200}
-                    />
-                  )}
+                  {/* Scrollable content container */}
+                  <Container
+                    width="100%"
+                    height="100%"
+                    flexDirection="column"
+                    overflow="scroll"
+                    scrollbarWidth={0}
+                    onScroll={(newX, newY, scrollPosition, event) => {
+                      // Блокируем overscroll (rubber band) сверху
+                      if (newY < 0) {
+                        scrollPosition.value = [newX, 0];
+                        return false;
+                      }
 
-                  {/* Секция: Featured Videos */}
-                  <Container flexDirection="column" width="100%" flexShrink={0}>
-                    <SectionTitle
-                      text="Featured Videos"
-                      fontSize={panelSettings.sectionTitleSize}
-                      bottomGap={panelSettings.sectionTitleBottomGap}
-                      paddingX={panelSettings.gridPaddingX}
-                    />
-                    <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                      // Применяем кастомный множитель только для wheel events
+                      if (event && 'nativeEvent' in event && event.nativeEvent && 'deltaY' in event.nativeEvent) {
+                        const ne = event.nativeEvent;
+                        const currentPos = scrollPosition.value || [0, 0];
+
+                        // Применяем scrollMultiplier
+                        const scaledX = ne.deltaX * panelSettings.scrollMultiplier;
+                        const scaledY = ne.deltaY * panelSettings.scrollMultiplier;
+
+                        // Вычисляем новую позицию
+                        const finalY = Math.max(0, currentPos[1] + scaledY); // Не меньше 0
+
+                        // Обновляем позицию скролла
+                        scrollPosition.value = [
+                          currentPos[0] + scaledX,
+                          finalY
+                        ];
+
+                        // Предотвращаем дефолтное поведение
+                        return false;
+                      }
+
+                      // Для других событий (touch/drag) используем дефолтное поведение
+                      return undefined;
+                    }}
+                  >
+                    {/* Hero Banner - показываем если enabled */}
+                    {showHeroBanner && (
+                      <HeroBannerSlider
+                        panelHeight={panelSettings.panelHeight}
+                        heightPercent={panelSettings.bannerHeightPercent}
+                        borderRadius={panelSettings.panelBorderRadius}
+                        padding={panelSettings.gridPaddingX}
+                        settings={panelSettings}
+                      />
+                    )}
+
+                    {/* Header - показываем только если headerPosition === 'internal' */}
+                    {headerPosition === 'internal' && (
+                      <Header
+                        height={250}
+                        paddingX={panelSettings.gridPaddingX}
+                        logoHeight={200}
+                        marginTop={showHeroBanner ? 0 : panelSettings.gridPaddingX}
+                        marginBottom={showHeroBanner ? 0 : panelSettings.gridPaddingX}
+                        isAbsolute={showHeroBanner}
+                      />
+                    )}
+
+                    {/* Обёртка для секций с отступами и gap */}
+                    <Container
+                      flexDirection="column"
+                      width="100%"
+                      gap={panelSettings.sectionGap}
+                      paddingTop={
+                        showHeroBanner
+                          ? panelSettings.gridPaddingX
+                          : (headerPosition === 'internal' ? 0 : panelSettings.gridPaddingX)
+                      }
+                      paddingBottom={panelSettings.gridPaddingX}
+                      flexShrink={0}
+                    >
+                      {/* Секция: Featured Videos */}
+                      <Container flexDirection="column" width="100%" flexShrink={0}>
+                        <SectionTitle
+                          text="Featured Videos"
+                          fontSize={panelSettings.sectionTitleSize}
+                          bottomGap={panelSettings.sectionTitleBottomGap}
+                          paddingX={panelSettings.gridPaddingX}
+                        />
+                        <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                      </Container>
+
+                      {/* Секция: All Videos */}
+                      <Container flexDirection="column" width="100%" flexShrink={0}>
+                        <SectionTitle
+                          text="All Videos"
+                          fontSize={panelSettings.sectionTitleSize}
+                          bottomGap={panelSettings.sectionTitleBottomGap}
+                          paddingX={panelSettings.gridPaddingX}
+                        />
+                        <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
+                      </Container>
+
+                      {/* Секция: Best of the Month */}
+                      <Container flexDirection="column" width="100%" flexShrink={0}>
+                        <SectionTitle
+                          text="Best of the Month"
+                          fontSize={panelSettings.sectionTitleSize}
+                          bottomGap={panelSettings.sectionTitleBottomGap}
+                          paddingX={panelSettings.gridPaddingX}
+                        />
+                        <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
+                      </Container>
+                    </Container>
                   </Container>
 
-                  {/* Секция: All Videos */}
-                  <Container flexDirection="column" width="100%" flexShrink={0}>
-                    <SectionTitle
-                      text="All Videos"
-                      fontSize={panelSettings.sectionTitleSize}
-                      bottomGap={panelSettings.sectionTitleBottomGap}
-                      paddingX={panelSettings.gridPaddingX}
-                    />
-                    <VideoGrid settings={panelSettings} onCardSizeMeasured={handleCardSizeMeasured} />
+                  {/* Кнопка Settings в правом нижнем углу */}
+                  <Container
+                    positionType="absolute"
+                    positionBottom={24}
+                    positionRight={24}
+                    width={80}
+                    height={80}
+                    backgroundColor={showDebug ? '#4a9eff' : '#333333'}
+                    borderRadius={12}
+                    justifyContent="center"
+                    alignItems="center"
+                    cursor="pointer"
+                    onClick={() => setShowDebug(!showDebug)}
+                  >
+                    <Text fontSize={32} color="white" fontWeight={600}>
+                      ⚙️
+                    </Text>
                   </Container>
-
-                  {/* Секция: Best of the Month */}
-                  <Container flexDirection="column" width="100%" flexShrink={0}>
-                    <SectionTitle
-                      text="Best of the Month"
-                      fontSize={panelSettings.sectionTitleSize}
-                      bottomGap={panelSettings.sectionTitleBottomGap}
-                      paddingX={panelSettings.gridPaddingX}
-                    />
-                    <VideoCarousel settings={panelSettings} cardWidth={gridCardWidth} cardHeight={gridCardHeight} />
-                  </Container>
-
-                  {/* Spacer снизу для отступа при скролле */}
-                  <Container width="100%" height={panelSettings.gridPaddingX} flexShrink={0} />
-                </Container>
-
-                {/* Кнопка Settings в правом нижнем углу */}
-                <Container
-                  position="absolute"
-                  bottom={24}
-                  right={24}
-                  width={80}
-                  height={80}
-                  backgroundColor={showDebug ? '#4a9eff' : '#333333'}
-                  borderRadius={12}
-                  justifyContent="center"
-                  alignItems="center"
-                  cursor="pointer"
-                  onClick={() => setShowDebug(!showDebug)}
-                >
-                  <Text fontSize={32} color="white" fontWeight={600}>
-                    ⚙️
-                  </Text>
                 </Container>
               </DefaultProperties>
             </Root>
@@ -351,6 +444,8 @@ function App() {
                     togglePassthrough={togglePassthrough}
                     headerPosition={headerPosition}
                     onHeaderPositionChange={setHeaderPosition}
+                    showHeroBanner={showHeroBanner}
+                    onShowHeroBannerChange={setShowHeroBanner}
                   />
                 </DefaultProperties>
               </Root>
