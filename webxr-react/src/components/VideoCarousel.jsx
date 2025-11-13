@@ -5,7 +5,7 @@ import VideoCard from './VideoCard';
 // Видео для карусели - ВЫНЕСЕНО наружу чтобы не пересоздавать на каждый рендер
 const CAROUSEL_VIDEOS = [
     {
-      thumbnailUrl: '/images/7.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/7.webp`,
       title: 'Tropical Paradise Experience',
       studio: 'Paradise Studios',
       timeAgo: '2d ago',
@@ -13,7 +13,7 @@ const CAROUSEL_VIDEOS = [
       duration: '15:30'
     },
     {
-      thumbnailUrl: '/images/14.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/14.webp`,
       title: 'Mountain Adventure VR',
       studio: 'Nature VR',
       timeAgo: '5d ago',
@@ -21,7 +21,7 @@ const CAROUSEL_VIDEOS = [
       duration: '22:45'
     },
     {
-      thumbnailUrl: '/images/3.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/3.webp`,
       title: 'Ocean Depths Exploration',
       studio: 'Deep Blue',
       timeAgo: '1w ago',
@@ -29,7 +29,7 @@ const CAROUSEL_VIDEOS = [
       duration: '18:20'
     },
     {
-      thumbnailUrl: '/images/11.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/11.webp`,
       title: 'Desert Sunset Journey',
       studio: 'Wanderlust VR',
       timeAgo: '3d ago',
@@ -37,7 +37,7 @@ const CAROUSEL_VIDEOS = [
       duration: '12:15'
     },
     {
-      thumbnailUrl: '/images/5.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/5.webp`,
       title: 'Urban Night Life',
       studio: 'City Vibes',
       timeAgo: '1d ago',
@@ -45,7 +45,7 @@ const CAROUSEL_VIDEOS = [
       duration: '25:50'
     },
     {
-      thumbnailUrl: '/images/15.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/15.webp`,
       title: 'Forest Meditation',
       studio: 'Zen Studios',
       timeAgo: '4d ago',
@@ -53,7 +53,7 @@ const CAROUSEL_VIDEOS = [
       duration: '30:00'
     },
     {
-      thumbnailUrl: '/images/2.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/2.webp`,
       title: 'Space Station Tour',
       studio: 'Cosmic VR',
       timeAgo: '6d ago',
@@ -61,7 +61,7 @@ const CAROUSEL_VIDEOS = [
       duration: '20:35'
     },
     {
-      thumbnailUrl: '/images/9.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/9.webp`,
       title: 'Ancient Ruins Discovery',
       studio: 'History VR',
       timeAgo: '2w ago',
@@ -69,7 +69,7 @@ const CAROUSEL_VIDEOS = [
       duration: '16:40'
     },
     {
-      thumbnailUrl: '/images/12.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/12.webp`,
       title: 'Beach Relaxation 360°',
       studio: 'Paradise Studios',
       timeAgo: '1w ago',
@@ -77,7 +77,7 @@ const CAROUSEL_VIDEOS = [
       duration: '14:20'
     },
     {
-      thumbnailUrl: '/images/4.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/4.webp`,
       title: 'Alpine Summit Climb',
       studio: 'Nature VR',
       timeAgo: '3d ago',
@@ -85,7 +85,7 @@ const CAROUSEL_VIDEOS = [
       duration: '19:10'
     },
     {
-      thumbnailUrl: '/images/8.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/8.webp`,
       title: 'Underwater Coral Reef',
       studio: 'Deep Blue',
       timeAgo: '5d ago',
@@ -93,7 +93,7 @@ const CAROUSEL_VIDEOS = [
       duration: '21:30'
     },
     {
-      thumbnailUrl: '/images/13.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/13.webp`,
       title: 'Sahara Desert Night',
       studio: 'Wanderlust VR',
       timeAgo: '1d ago',

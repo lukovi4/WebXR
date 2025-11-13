@@ -3,13 +3,13 @@ import { useFrame } from '@react-three/fiber';
 import { Container, Text, Svg } from '@react-three/uikit';
 
 const MENU_ITEMS = [
-  { id: 'for-you', label: 'For you', icon: '/icons/Svg/for_you_icon.svg' },
-  { id: 'all-vr-videos', label: 'All VR videos', icon: '/icons/Svg/vr-videos.svg' },
-  { id: 'passthrough', label: 'Passthrough', icon: '/icons/Svg/passthrough.svg' },
-  { id: 'slr-originals', label: 'SLR Originals', icon: '/icons/Svg/slr-originals.svg' },
-  { id: 'interactive', label: 'Interactive', icon: '/icons/Svg/interactive.svg' },
-  { id: 'vr-cams', label: 'VR Cams', icon: '/icons/Svg/vr-cams.svg' },
-  { id: 'free', label: 'Free', icon: '/icons/Svg/free.svg' },
+  { id: 'for-you', label: 'For you', icon: `${import.meta.env.BASE_URL}icons/Svg/for_you_icon.svg` },
+  { id: 'all-vr-videos', label: 'All VR videos', icon: `${import.meta.env.BASE_URL}icons/Svg/vr-videos.svg` },
+  { id: 'passthrough', label: 'Passthrough', icon: `${import.meta.env.BASE_URL}icons/Svg/passthrough.svg` },
+  { id: 'slr-originals', label: 'SLR Originals', icon: `${import.meta.env.BASE_URL}icons/Svg/slr-originals.svg` },
+  { id: 'interactive', label: 'Interactive', icon: `${import.meta.env.BASE_URL}icons/Svg/interactive.svg` },
+  { id: 'vr-cams', label: 'VR Cams', icon: `${import.meta.env.BASE_URL}icons/Svg/vr-cams.svg` },
+  { id: 'free', label: 'Free', icon: `${import.meta.env.BASE_URL}icons/Svg/free.svg` },
 ];
 
 export default memo(function NavigationMenu({

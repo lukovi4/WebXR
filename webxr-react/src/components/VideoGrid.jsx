@@ -12,7 +12,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
   // Массив видео данных (46 карточек для полного каталога)
   const videos = [
     {
-      thumbnailUrl: '/images/1.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/1.webp`,
       title: 'Tropical Paradise Experience',
       studio: 'Paradise Studios',
       timeAgo: '2d ago',
@@ -20,7 +20,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '15:30'
     },
     {
-      thumbnailUrl: '/images/12.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/12.webp`,
       title: 'Mountain Adventure VR',
       studio: 'Nature VR',
       timeAgo: '5d ago',
@@ -28,7 +28,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '22:45'
     },
     {
-      thumbnailUrl: '/images/3.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/3.webp`,
       title: 'Ocean Depths Exploration',
       studio: 'Deep Blue',
       timeAgo: '1w ago',
@@ -36,7 +36,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '18:20'
     },
     {
-      thumbnailUrl: '/images/14.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/14.webp`,
       title: 'Desert Sunset Journey',
       studio: 'Wanderlust VR',
       timeAgo: '3d ago',
@@ -44,7 +44,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '12:15'
     },
     {
-      thumbnailUrl: '/images/5.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/5.webp`,
       title: 'Urban Night Life',
       studio: 'City Vibes',
       timeAgo: '1d ago',
@@ -52,7 +52,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '25:50'
     },
     {
-      thumbnailUrl: '/images/9.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/9.webp`,
       title: 'Forest Meditation',
       studio: 'Zen Studios',
       timeAgo: '4d ago',
@@ -60,7 +60,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '30:00'
     },
     {
-      thumbnailUrl: '/images/7.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/7.webp`,
       title: 'Space Station Tour',
       studio: 'Cosmic VR',
       timeAgo: '6d ago',
@@ -68,7 +68,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '20:35'
     },
     {
-      thumbnailUrl: '/images/11.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/11.webp`,
       title: 'Ancient Ruins Discovery',
       studio: 'History VR',
       timeAgo: '2w ago',
@@ -76,7 +76,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '16:40'
     },
     {
-      thumbnailUrl: '/images/15.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/15.webp`,
       title: 'Beach Relaxation 360°',
       studio: 'Paradise Studios',
       timeAgo: '1w ago',
@@ -84,7 +84,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '14:20'
     },
     {
-      thumbnailUrl: '/images/2.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/2.webp`,
       title: 'Alpine Summit Climb',
       studio: 'Nature VR',
       timeAgo: '3d ago',
@@ -92,7 +92,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '19:10'
     },
     {
-      thumbnailUrl: '/images/13.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/13.webp`,
       title: 'Underwater Coral Reef',
       studio: 'Deep Blue',
       timeAgo: '5d ago',
@@ -100,7 +100,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '21:30'
     },
     {
-      thumbnailUrl: '/images/4.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/4.webp`,
       title: 'Sahara Desert Night',
       studio: 'Wanderlust VR',
       timeAgo: '1d ago',
@@ -108,7 +108,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '17:45'
     },
     {
-      thumbnailUrl: '/images/10.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/10.webp`,
       title: 'Tokyo Neon Dreams',
       studio: 'City Vibes',
       timeAgo: '2d ago',
@@ -116,7 +116,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '23:15'
     },
     {
-      thumbnailUrl: '/images/6.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/6.webp`,
       title: 'Rainforest Sanctuary',
       studio: 'Zen Studios',
       timeAgo: '6d ago',
@@ -124,7 +124,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '28:50'
     },
     {
-      thumbnailUrl: '/images/8.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/8.webp`,
       title: 'Mars Colony Preview',
       studio: 'Cosmic VR',
       timeAgo: '4d ago',
@@ -132,7 +132,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '24:20'
     },
     {
-      thumbnailUrl: '/images/1.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/1.webp`,
       title: 'Mayan Temple Expedition',
       studio: 'History VR',
       timeAgo: '1w ago',
@@ -140,7 +140,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '19:55'
     },
     {
-      thumbnailUrl: '/images/5.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/5.webp`,
       title: 'Rooftop Sunset Views',
       studio: 'City Vibes',
       timeAgo: '3d ago',
@@ -148,7 +148,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '16:25'
     },
     {
-      thumbnailUrl: '/images/7.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/7.webp`,
       title: 'Zero Gravity Experience',
       studio: 'Cosmic VR',
       timeAgo: '1w ago',
@@ -156,7 +156,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '18:40'
     },
     {
-      thumbnailUrl: '/images/3.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/3.webp`,
       title: 'Caribbean Diving Adventure',
       studio: 'Deep Blue',
       timeAgo: '4d ago',
@@ -164,7 +164,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '20:15'
     },
     {
-      thumbnailUrl: '/images/9.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/9.webp`,
       title: 'Zen Garden Retreat',
       studio: 'Zen Studios',
       timeAgo: '5d ago',
@@ -172,7 +172,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '26:30'
     },
     {
-      thumbnailUrl: '/images/12.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/12.webp`,
       title: 'Himalayan Trek 360',
       studio: 'Nature VR',
       timeAgo: '2d ago',
@@ -180,7 +180,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '24:10'
     },
     {
-      thumbnailUrl: '/images/14.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/14.webp`,
       title: 'Arabian Nights Experience',
       studio: 'Wanderlust VR',
       timeAgo: '6d ago',
@@ -188,7 +188,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '15:55'
     },
     {
-      thumbnailUrl: '/images/1.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/1.webp`,
       title: 'Private Island Getaway',
       studio: 'Paradise Studios',
       timeAgo: '1d ago',
@@ -196,7 +196,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '17:20'
     },
     {
-      thumbnailUrl: '/images/15.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/15.webp`,
       title: 'Coastal Sunrise Yoga',
       studio: 'Paradise Studios',
       timeAgo: '3d ago',
@@ -204,7 +204,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '22:00'
     },
     {
-      thumbnailUrl: '/images/10.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/10.webp`,
       title: 'Seoul Street Food Tour',
       studio: 'City Vibes',
       timeAgo: '5d ago',
@@ -212,7 +212,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '19:30'
     },
     {
-      thumbnailUrl: '/images/6.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/6.webp`,
       title: 'Amazon Jungle Expedition',
       studio: 'Zen Studios',
       timeAgo: '1w ago',
@@ -220,7 +220,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '27:45'
     },
     {
-      thumbnailUrl: '/images/8.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/8.webp`,
       title: 'International Space Station',
       studio: 'Cosmic VR',
       timeAgo: '2d ago',
@@ -228,7 +228,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '21:50'
     },
     {
-      thumbnailUrl: '/images/11.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/11.webp`,
       title: 'Egyptian Pyramids Tour',
       studio: 'History VR',
       timeAgo: '4d ago',
@@ -236,7 +236,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '18:30'
     },
     {
-      thumbnailUrl: '/images/2.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/2.webp`,
       title: 'Norwegian Fjords Journey',
       studio: 'Nature VR',
       timeAgo: '6d ago',
@@ -244,7 +244,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '23:40'
     },
     {
-      thumbnailUrl: '/images/13.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/13.webp`,
       title: 'Great Barrier Reef Dive',
       studio: 'Deep Blue',
       timeAgo: '1d ago',
@@ -252,7 +252,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '19:25'
     },
     {
-      thumbnailUrl: '/images/4.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/4.webp`,
       title: 'Morocco Desert Safari',
       studio: 'Wanderlust VR',
       timeAgo: '3d ago',
@@ -260,7 +260,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '20:05'
     },
     {
-      thumbnailUrl: '/images/7.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/7.webp`,
       title: 'Lunar Surface Exploration',
       studio: 'Cosmic VR',
       timeAgo: '5d ago',
@@ -268,7 +268,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '22:30'
     },
     {
-      thumbnailUrl: '/images/9.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/9.webp`,
       title: 'Bamboo Forest Serenity',
       studio: 'Zen Studios',
       timeAgo: '2d ago',
@@ -276,7 +276,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '29:15'
     },
     {
-      thumbnailUrl: '/images/1.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/1.webp`,
       title: 'Fiji Islands Paradise',
       studio: 'Paradise Studios',
       timeAgo: '4d ago',
@@ -284,7 +284,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '16:50'
     },
     {
-      thumbnailUrl: '/images/12.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/12.webp`,
       title: 'Rocky Mountains Winter',
       studio: 'Nature VR',
       timeAgo: '1w ago',
@@ -292,7 +292,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '21:20'
     },
     {
-      thumbnailUrl: '/images/10.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/10.webp`,
       title: 'Hong Kong Night Lights',
       studio: 'City Vibes',
       timeAgo: '3d ago',
@@ -300,7 +300,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '18:15'
     },
     {
-      thumbnailUrl: '/images/3.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/3.webp`,
       title: 'Maldives Underwater Villa',
       studio: 'Deep Blue',
       timeAgo: '5d ago',
@@ -308,7 +308,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '17:35'
     },
     {
-      thumbnailUrl: '/images/15.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/15.webp`,
       title: 'Bali Beach Sunset',
       studio: 'Paradise Studios',
       timeAgo: '6d ago',
@@ -316,7 +316,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '14:45'
     },
     {
-      thumbnailUrl: '/images/14.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/14.webp`,
       title: 'Dubai Desert Luxury',
       studio: 'Wanderlust VR',
       timeAgo: '1d ago',
@@ -324,7 +324,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '15:30'
     },
     {
-      thumbnailUrl: '/images/8.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/8.webp`,
       title: 'Saturn Rings Flyby',
       studio: 'Cosmic VR',
       timeAgo: '2d ago',
@@ -332,7 +332,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '23:25'
     },
     {
-      thumbnailUrl: '/images/11.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/11.webp`,
       title: 'Roman Colosseum Virtual',
       studio: 'History VR',
       timeAgo: '4d ago',
@@ -340,7 +340,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '17:15'
     },
     {
-      thumbnailUrl: '/images/6.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/6.webp`,
       title: 'Costa Rica Wildlife Tour',
       studio: 'Zen Studios',
       timeAgo: '3d ago',
@@ -348,7 +348,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '28:00'
     },
     {
-      thumbnailUrl: '/images/13.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/13.webp`,
       title: 'Deep Sea Creatures',
       studio: 'Deep Blue',
       timeAgo: '5d ago',
@@ -356,7 +356,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '20:50'
     },
     {
-      thumbnailUrl: '/images/2.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/2.webp`,
       title: 'Swiss Alps Paragliding',
       studio: 'Nature VR',
       timeAgo: '1w ago',
@@ -364,7 +364,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '22:35'
     },
     {
-      thumbnailUrl: '/images/4.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/4.webp`,
       title: 'Petra Ancient City',
       studio: 'Wanderlust VR',
       timeAgo: '2d ago',
@@ -372,7 +372,7 @@ export default memo(function VideoGrid({ settings, onCardSizeMeasured, maxVideos
       duration: '19:40'
     },
     {
-      thumbnailUrl: '/images/5.webp',
+      thumbnailUrl: `${import.meta.env.BASE_URL}images/5.webp`,
       title: 'New York Skyline Night',
       studio: 'City Vibes',
       timeAgo: '6d ago',

@@ -32,7 +32,7 @@ export default memo(function Header({
         flexShrink={0}
       >
         <Image
-          src="/images/logo.png"
+          src={`${import.meta.env.BASE_URL}images/logo.png`}
           width="100%"
           height="100%"
         />
@@ -55,7 +55,7 @@ export default memo(function Header({
         gap={50}
         zIndex={1}
       >
-        <Svg src="/icons/Svg/search_icon.svg" width={80} height={80} color="#999999" />
+        <Svg src={`${import.meta.env.BASE_URL}icons/Svg/search_icon.svg`} width={80} height={80} color="#999999" />
         <Text fontSize={70} color="#999999" fontWeight={500}>
           Search videos...
         </Text>

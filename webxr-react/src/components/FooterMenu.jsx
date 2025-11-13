@@ -2,10 +2,10 @@ import { memo, useState } from 'react';
 import { Container, Svg } from '@react-three/uikit';
 
 const MENU_ITEMS = [
-  { id: 'home', icon: '/icons/Svg/home_icon.svg' },
-  { id: 'add-toy', icon: '/icons/Svg/add_toy_icon.svg' },
-  { id: 'search', icon: '/icons/Svg/search_icon.svg' },
-  { id: 'profile', icon: '/icons/Svg/profile_icon.svg' },
+  { id: 'home', icon: `${import.meta.env.BASE_URL}icons/Svg/home_icon.svg` },
+  { id: 'add-toy', icon: `${import.meta.env.BASE_URL}icons/Svg/add_toy_icon.svg` },
+  { id: 'search', icon: `${import.meta.env.BASE_URL}icons/Svg/search_icon.svg` },
+  { id: 'profile', icon: `${import.meta.env.BASE_URL}icons/Svg/profile_icon.svg` },
 ];
 
 export default memo(function FooterMenu({

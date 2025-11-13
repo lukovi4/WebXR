@@ -6,17 +6,17 @@ import { useOptimizedTexture } from '../hooks/useOptimizedTexture';
 // Массив баннеров с контентом
 const BANNERS = [
   {
-    image: '/images/Banner/banner_1.webp',
+    image: `${import.meta.env.BASE_URL}images/Banner/banner_1.webp`,
     title: 'Discover Immersive Worlds',
     description: 'Experience breathtaking VR adventures like never before'
   },
   {
-    image: '/images/Banner/banner_2.webp',
+    image: `${import.meta.env.BASE_URL}images/Banner/banner_2.webp`,
     title: 'Virtual Reality Reimagined',
     description: 'Step into stunning environments and interactive experiences'
   },
   {
-    image: '/images/Banner/banner_3.webp',
+    image: `${import.meta.env.BASE_URL}images/Banner/banner_3.webp`,
     title: 'Your Gateway to VR',
     description: 'Explore premium content curated for true enthusiasts'
   },
@@ -72,7 +72,7 @@ const DotIndicator = memo(function DotIndicator({ isActive, onClick }) {
 const NavArrow = memo(function NavArrow({ direction, onClick }) {
   const iconSrc = direction === 'left'
     ? '/icons/Svg/arrow_left_icon.svg'
-    : '/icons/Svg/arrow_right_icon.svg';
+    : `${import.meta.env.BASE_URL}icons/Svg/arrow_right_icon.svg`;
 
   return (
     <Container
@@ -238,7 +238,7 @@ export default memo(function HeroBannerSlider({ panelHeight, heightPercent = 50,
         positionType="absolute"
         positionTop={0}
         positionLeft={0}
-        src="/images/Banner/gradient.png"
+        src={`${import.meta.env.BASE_URL}images/Banner/gradient.png`}
         width="100%"
         height="100%"
         opacity={0.5}
