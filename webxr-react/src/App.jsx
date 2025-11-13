@@ -68,8 +68,8 @@ const DEFAULT_SETTINGS = {
   curvature: "flat",
 };
 
-// Ключ для localStorage
-const STORAGE_KEY = 'vr-panel-settings';
+// Ключ для localStorage (v2 - обновлены дефолтные настройки)
+const STORAGE_KEY = 'vr-panel-settings-v2';
 
 // Настройка Inter MSDF шрифтов (Medium и Semi-Bold)
 const fontFamilies = {
